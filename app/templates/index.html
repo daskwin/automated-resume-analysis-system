@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>ResumeMatch</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">◇</div>
+                <div>
+                    <h1>ResumeMatch</h1>
+                    <p>Candidate matching</p>
+                </div>
+            </div>
+
+            <nav class="nav">
+                <button class="nav-button active" data-view="resumeView">
+                    <span class="nav-icon">⌁</span>
+                    <span>Анализ кандидата</span>
+                </button>
+
+                <button class="nav-button" data-view="vacanciesView">
+                    <span class="nav-icon">□</span>
+                    <span>Вакансии</span>
+                </button>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <section class="view active-view" id="resumeView">
+                <header class="page-header">
+                    <div>
+                        <p class="eyebrow">Candidate analysis</p>
+                        <h2>Анализ кандидата</h2>
+                        <p class="page-description">
+                            Загрузите резюме, чтобы получить профиль кандидата и список подходящих вакансий.
+                        </p>
+                    </div>
+                </header>
+
+                <div class="resume-layout">
+                    <section class="panel upload-panel">
+                        <div class="panel-header">
+                            <h3>Загрузка резюме</h3>
+                            <p>Поддерживаются PDF, DOCX и TXT</p>
+                        </div>
+
+                        <form id="uploadForm">
+                            <label class="file-zone" for="resumeFile">
+                                <span class="file-icon">↑</span>
+                                <span id="fileLabel">Выберите файл резюме</span>
+                                <small>или перетащите его сюда</small>
+                                <input
+                                    type="file"
+                                    id="resumeFile"
+                                    name="file"
+                                    accept=".pdf,.docx,.txt"
+                                >
+                            </label>
+
+                            <label class="checkbox-row">
+                                <input type="checkbox" id="matchVacancies" checked>
+                                <span>Подобрать вакансии</span>
+                            </label>
+
+                            <button type="submit" id="submitButton" class="primary-button">
+                                Анализировать
+                            </button>
+                        </form>
+
+                        <div id="errorMessage" class="message error-message hidden"></div>
+                    </section>
+
+                    <section class="panel result-panel hidden" id="resultCard">
+                        <div class="panel-header result-header">
+                            <div>
+                                <h3>Результат</h3>
+                                <p>Краткий профиль и рекомендации по вакансиям</p>
+                            </div>
+                            <span class="status-pill">Готово</span>
+                        </div>
+
+                        <div class="summary-grid">
+                            <div class="summary-card">
+                                <span>Файл</span>
+                                <strong id="resultFilename">-</strong>
+                            </div>
+
+                            <div class="summary-card">
+                                <span>Текст</span>
+                                <strong id="resultTextLength">-</strong>
+                            </div>
+                        </div>
+
+                        <section class="section-block match-block hidden" id="matchBlock">
+                            <div class="section-title-row">
+                                <div>
+                                    <h4>Подходящие вакансии</h4>
+                                </div>
+                            </div>
+                            <div id="vacancyMatches" class="vacancy-matches"></div>
+                        </section>
+
+                        <section class="section-block">
+                            <div class="section-title-row">
+                                <div>
+                                    <h4>Специализация кандидата</h4>
+                                </div>
+                            </div>
+
+                            <div class="main-prediction">
+                                <span>Роль</span>
+                                <strong id="resultItRole">-</strong>
+                            </div>
+
+                            <div class="confidence-block">
+                                <div class="confidence-header">
+                                    <span>Уверенность</span>
+                                    <strong id="resultItRoleConfidenceText">-</strong>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar" id="itRoleConfidenceBar"></div>
+                                </div>
+                            </div>
+
+                            <div class="subsection-title">Похожие специализации</div>
+                            <div id="topItRoles" class="top-list"></div>
+                        </section>
+
+                        <section class="section-block">
+                            <div class="section-title-row">
+                                <div>
+                                    <h4>Профессиональное направление</h4>
+                                </div>
+                            </div>
+
+                            <div class="main-prediction">
+                                <span>Направление</span>
+                                <strong id="resultCategory">-</strong>
+                            </div>
+
+                            <div class="main-prediction secondary hidden">
+                                <span>Техническая информация</span>
+                                <strong id="resultModelType">-</strong>
+                            </div>
+
+                            <div class="confidence-block">
+                                <div class="confidence-header">
+                                    <span>Уверенность</span>
+                                    <strong id="resultConfidenceText">-</strong>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar" id="confidenceBar"></div>
+                                </div>
+                            </div>
+
+                            <div class="subsection-title">Возможные направления</div>
+                            <div id="topCategories" class="top-list"></div>
+                        </section>
+
+                        <section class="section-block">
+                            <div class="section-title-row">
+                                <div>
+                                    <h4>Профиль кандидата</h4>
+                                    <p>Контакты, навыки, опыт и образование</p>
+                                </div>
+                            </div>
+
+                            <div class="entity-grid">
+                                <div class="entity-card">
+                                    <span>Email</span>
+                                    <div id="entityEmails" class="entity-list">-</div>
+                                </div>
+
+                                <div class="entity-card">
+                                    <span>Телефоны</span>
+                                    <div id="entityPhones" class="entity-list">-</div>
+                                </div>
+
+                                <div class="entity-card">
+                                    <span>Ссылки</span>
+                                    <div id="entityLinks" class="entity-list">-</div>
+                                </div>
+
+                                <div class="entity-card">
+                                    <span>Навыки</span>
+                                    <div id="entitySkills" class="entity-list">-</div>
+                                </div>
+
+                                <div class="entity-card">
+                                    <span>Имя</span>
+                                    <div id="entityPersons" class="entity-list">-</div>
+                                </div>
+
+                                <div class="entity-card">
+                                    <span>Должности</span>
+                                    <div id="entityDesignations" class="entity-list">-</div>
+                                </div>
+
+                                <div class="entity-card">
+                                    <span>Компании</span>
+                                    <div id="entityCompanies" class="entity-list">-</div>
+                                </div>
+
+                                <div class="entity-card">
+                                    <span>Локация</span>
+                                    <div id="entityLocations" class="entity-list">-</div>
+                                </div>
+
+                                <div class="entity-card">
+                                    <span>Образование</span>
+                                    <div id="entityEducation" class="entity-list">-</div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="section-block">
+                            <details class="text-details" open>
+                                <summary>Извлеченный текст резюме</summary>
+                                <pre id="textPreview">-</pre>
+                            </details>
+                        </section>
+                    </section>
+                </div>
+            </section>
+
+            <section class="view" id="vacanciesView">
+                <header class="page-header split-header">
+                    <div>
+                        <p class="eyebrow">Open positions</p>
+                        <h2>Вакансии</h2>
+                        <p class="page-description">
+                            Создавайте вакансии и используйте их для подбора кандидатов.
+                        </p>
+                    </div>
+
+                    <button type="button" class="secondary-button" id="refreshVacanciesButton">
+                        Обновить
+                    </button>
+                </header>
+
+                <div class="vacancies-layout">
+                    <section class="panel vacancy-form-panel">
+                        <div class="panel-header">
+                            <h3>Новая вакансия</h3>
+                            <p>Добавьте описание роли и ключевые требования</p>
+                        </div>
+
+                        <form id="vacancyForm">
+                            <label class="field-label" for="vacancyTitle">Название вакансии</label>
+                            <input
+                                type="text"
+                                id="vacancyTitle"
+                                placeholder="Data Engineer"
+                                required
+                            >
+
+                            <label class="field-label" for="vacancyCompany">Компания</label>
+                            <input
+                                type="text"
+                                id="vacancyCompany"
+                                placeholder="DataCloud Analytics"
+                            >
+
+                            <label class="field-label" for="vacancyLocation">Локация</label>
+                            <input
+                                type="text"
+                                id="vacancyLocation"
+                                placeholder="London / Remote"
+                            >
+
+                            <label class="field-label" for="vacancyDescription">Описание</label>
+                            <textarea
+                                id="vacancyDescription"
+                                placeholder="Кратко опишите задачи и контекст вакансии..."
+                                required
+                            ></textarea>
+
+                            <label class="field-label" for="vacancyRequirements">Требования</label>
+                            <textarea
+                                id="vacancyRequirements"
+                                placeholder="Python, SQL, Spark, Airflow..."
+                            ></textarea>
+
+                            <button type="submit" id="vacancySubmitButton" class="primary-button">
+                                Сохранить
+                            </button>
+                        </form>
+
+                        <div id="vacancyMessage" class="message success-message hidden"></div>
+                    </section>
+
+                    <section class="panel vacancy-list-panel">
+                        <div class="panel-header">
+                            <h3>Список вакансий</h3>
+                            <p>Сохраненные позиции для подбора кандидатов</p>
+                        </div>
+
+                        <div id="vacancyList" class="vacancy-list">
+                            <p class="muted">Вакансии пока не добавлены.</p>
+                        </div>
+                    </section>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
