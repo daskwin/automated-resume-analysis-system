@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+jinja2
+python-multipart
+pypdf
+python-docx
+sqlalchemy
+psycopg2-binary
+numpy<2
+scikit-learn
+joblib
+torch
+transformers
+sentence-transformers
