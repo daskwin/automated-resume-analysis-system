@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: resume-analysis-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-resume_analysis}
+      POSTGRES_USER: ${POSTGRES_USER:-resume_analysis}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-resume_analysis_password}
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
