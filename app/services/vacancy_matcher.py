@@ -136,31 +136,31 @@ class VacancyMatcher:
         vacancy_title: Optional[str],
     ) -> str:
         if final_score >= 0.75:
-            level = "Кандидат хорошо подходит под вакансию."
+            level = "The candidate is a strong match for the vacancy."
         elif final_score >= 0.50:
-            level = "Кандидат частично подходит под вакансию."
+            level = "The candidate is a partial match for the vacancy."
         else:
-            level = "Кандидат слабо подходит под вакансию."
+            level = "The candidate is a weak match for the vacancy."
 
         vacancy_text = ""
 
         if vacancy_title:
-            vacancy_text = f" Вакансия: {vacancy_title}."
+            vacancy_text = f" Vacancy: {vacancy_title}."
 
         role_text = ""
 
         if resume_predicted_role:
-            role_text = f" Специализация кандидата: {resume_predicted_role}."
+            role_text = f" Candidate specialization: {resume_predicted_role}."
 
         matched_text = ""
 
         if matched_skills:
-            matched_text = f" Совпавшие навыки: {', '.join(matched_skills[:8])}."
+            matched_text = f" Matched skills: {', '.join(matched_skills[:8])}."
 
         missing_text = ""
 
         if missing_skills:
-            missing_text = f" Недостающие навыки: {', '.join(missing_skills[:8])}."
+            missing_text = f" Missing skills: {', '.join(missing_skills[:8])}."
 
         return level + vacancy_text + role_text + matched_text + missing_text
 
