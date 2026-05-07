@@ -12,3 +12,4 @@ joblib
 torch
 transformers
 sentence-transformers
+boto3

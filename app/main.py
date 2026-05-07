@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
+from app.services.model_downloader import ensure_all_models_exist
+ensure_all_models_exist()
+
 from app.api.routes import router
 from app.db.database import init_db
 
