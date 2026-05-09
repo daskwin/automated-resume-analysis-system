@@ -931,3 +931,6 @@ pre {
         text-align: left;
     }
 }
+.confidence-block {
+    display: none !important;
+}

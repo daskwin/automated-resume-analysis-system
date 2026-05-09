@@ -359,21 +359,15 @@ function renderGeneralDomain(data) {
         resultModelType.textContent = `${data.model_type || "tfidf"} + ${data.classifier_name || "LogisticRegression"}`;
     }
 
-    const confidencePercent = Math.round((data.confidence || 0) * 100);
-
-    resultConfidenceText.textContent = `${confidencePercent}%`;
-    confidenceBar.style.width = `${confidencePercent}%`;
+    hideConfidenceBlock(resultConfidenceText, confidenceBar);
 
     topCategories.innerHTML = "";
 
     topDomains.forEach((item) => {
-        const percent = Math.round(item.score * 100);
-
         const div = document.createElement("div");
         div.className = "top-item";
         div.innerHTML = `
             <span>${escapeHtml(item.category)}</span>
-            <strong>${percent}%</strong>
         `;
 
         topCategories.appendChild(div);
@@ -386,29 +380,59 @@ function renderItRole(data) {
         return;
     }
 
-    resultItRole.textContent = data.it_role.predicted_role;
+    resultItRole.textContent = data.it_role.predicted_role || "-";
 
-    const itConfidencePercent = Math.round((data.it_role.confidence || 0) * 100);
-
-    resultItRoleConfidenceText.textContent = `${itConfidencePercent}%`;
-    itRoleConfidenceBar.style.width = `${itConfidencePercent}%`;
+    hideConfidenceBlock(resultItRoleConfidenceText, itRoleConfidenceBar);
 
     topItRoles.innerHTML = "";
 
     const topRoles = data.it_role.top_roles || [];
 
     topRoles.slice(0, 3).forEach((item) => {
-        const percent = Math.round(item.score * 100);
-
         const div = document.createElement("div");
         div.className = "top-item";
         div.innerHTML = `
             <span>${escapeHtml(item.role)}</span>
-            <strong>${percent}%</strong>
         `;
 
         topItRoles.appendChild(div);
     });
+}
+
+
+function hideConfidenceBlock(confidenceTextElement, confidenceBarElement) {
+    if (confidenceTextElement) {
+        confidenceTextElement.textContent = "";
+
+        const possibleRows = [
+            confidenceTextElement.closest(".result-row"),
+            confidenceTextElement.closest(".metric-row"),
+            confidenceTextElement.closest(".info-row"),
+            confidenceTextElement.closest(".confidence-row"),
+        ];
+
+        possibleRows.forEach((row) => {
+            if (row) {
+                row.style.display = "none";
+            }
+        });
+    }
+
+    if (confidenceBarElement) {
+        confidenceBarElement.style.width = "0%";
+
+        const possibleProgressBlocks = [
+            confidenceBarElement.closest(".progress"),
+            confidenceBarElement.closest(".progress-wrapper"),
+            confidenceBarElement.closest(".confidence-progress"),
+        ];
+
+        possibleProgressBlocks.forEach((block) => {
+            if (block) {
+                block.style.display = "none";
+            }
+        });
+    }
 }
 
 
