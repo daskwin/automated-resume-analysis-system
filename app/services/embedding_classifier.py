@@ -7,7 +7,7 @@ from sentence_transformers import SentenceTransformer
 
 
 BASE_DIR = Path(__file__).resolve().parents[1]
-MODEL_DIR = BASE_DIR / "models" / "embedding_model_old"
+MODEL_DIR = BASE_DIR / "models" / "embedding_model"
 
 CLASSIFIER_PATH = MODEL_DIR / "embedding_classifier.pkl"
 LABEL_ENCODER_PATH = MODEL_DIR / "label_encoder.pkl"
@@ -107,7 +107,7 @@ class ResumeEmbeddingClassifier:
             "confidence": float(max(item["score"] for item in top_categories)),
             "top_3_categories": top_categories,
             "model_type": "embedding",
-            "embedding_model_old": self.metadata.get("embedding_model_name"),
+            "embedding_model": self.metadata.get("embedding_model_name"),
             "classifier_name": self.metadata.get("classifier_name"),
         }
 
