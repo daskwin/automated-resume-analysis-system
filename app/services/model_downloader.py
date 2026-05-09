@@ -21,7 +21,7 @@ MODEL_SPECS = [
         "env_key": "S3_EMBEDDING_MODEL_KEY",
         "target_dir": MODELS_DIR / "embedding_model",
         "required_file": "embedding_classifier.pkl",
-        "archive_name": "embedding_model.zip",
+        "archive_name": "embedding_model_old.zip",
     },
     {
         "name": "IT role model",

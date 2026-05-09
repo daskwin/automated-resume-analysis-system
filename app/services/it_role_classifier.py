@@ -100,7 +100,7 @@ class ITRoleClassifier:
             "confidence": float(max(item["score"] for item in top_roles)),
             "top_roles": top_roles,
             "model_type": "it_role_classifier",
-            "embedding_model": self.metadata.get("embedding_model_name"),
+            "embedding_model_old": self.metadata.get("embedding_model_name"),
             "classifier_name": self.metadata.get("classifier_name"),
         }
 
