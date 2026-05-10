@@ -99,7 +99,7 @@ TF-IDF + LogisticRegression
 Baseline обучается в ноутбуке:
 
 ```text
-notebooks/00_train_tfidf_baseline.ipynb
+notebooks/00_train_tfidf_logreg_baseline.ipynb
 ```
 
 Эта модель не является основной моделью сервиса. Она используется как начальная точка для сравнения классического подхода к текстовой классификации с embedding-based моделями.
@@ -302,7 +302,7 @@ metadata.json
 
 ```bash
 # 1. Подготовить базовый датасет резюме
-python scripts/prepare_resume_dataset.py
+python scripts/download_resume_dataset.py
 
 # 2. Подготовить grouped-датасет для общей классификации
 python scripts/prepare_general_grouped_dataset.py
@@ -311,7 +311,7 @@ python scripts/prepare_general_grouped_dataset.py
 python scripts/prepare_it_roles_dataset.py
 
 # 4. Обучить baseline
-jupyter notebook notebooks/00_train_tfidf_baseline.ipynb
+jupyter notebook notebooks/00_train_tfidf_logreg_baseline.ipynb
 
 # 5. Обучить модель общей классификации
 jupyter notebook notebooks/01_train_resume_category_classifier.ipynb
