@@ -1,6 +1,8 @@
+datasets
 fastapi
 uvicorn[standard]
 jinja2
+pandas
 python-multipart
 pypdf
 python-docx
